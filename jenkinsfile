@@ -1,32 +1,21 @@
 pipeline {
-    agent any
-
-    stages {
-        stage ('Compile Stage') {
-
-            steps {
-                withMaven(maven : 'maven3') {
-                    sh 'mvn clean compile'
-                }
-            }
-        }
-
-        stage ('Testing Stage') {
-
-            steps {
-                withMaven(maven : 'maven3') {
-                    sh 'mvn test'
-                }
-            }
-        }
-
-
-        stage ('Deployment Stage') {
-            steps {
-                withMaven(maven : 'maven3') {
-                    sh 'mvn deploy'
-                }
-            }
-        }
+  agent {
+    node {
+      label 'agent1'
     }
+
+  }
+  stages {
+    stage('saltcommand') {
+      steps {
+        salt(authtype: 'pam', clientInterface: local(arguments: '"ls -l"', blockbuild: true, function: 'cmd.run', jobPollTime: 6, target: 'NGITQA-AUT-N01', targettype: 'glob'), credentialsId: '0cbaee23-40ff-4289-ba3a-2ade61ee12d5', saveFile: true, servername: 'http://10.251.205.11:3333')
+        script {
+          env.WORKSPACE = pwd()
+          def output = readFile "${env.WORKSPACE}/saltOutput.json"
+          echo output
+        }
+
+      }
+    }
+  }
 }
