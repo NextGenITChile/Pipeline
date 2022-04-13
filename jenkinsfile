@@ -1,7 +1,6 @@
 pipeline {
   agent any
 
-  }
   stages {
     stage('saltcommand') {
       steps {
@@ -11,7 +10,6 @@ pipeline {
           def output = readFile "${env.WORKSPACE}/saltOutput.json"
           echo output
         }
-
       }
     }
   }
