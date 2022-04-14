@@ -4,7 +4,7 @@ pipeline {
   stages {
     stage('Windows memoria') {
       steps {
-        salt(authtype: 'pam', clientInterface: local(arguments: '', blockbuild: true, function: 'modulomem_win.memoria', jobPollTime: 6, target: 'NetGenBAckup', targettype: 'glob'), credentialsId: '0cbaee23-40ff-4289-ba3a-2ade61ee12d5', saveFile: true, servername: 'http://10.251.205.11:3333')
+        salt(authtype: 'pam', clientInterface: local(arguments: '', blockbuild: true, function: 'modulomem_win.memoria', jobPollTime: 6, target: 'NGITQA-CLT-004', targettype: 'glob'), credentialsId: '0cbaee23-40ff-4289-ba3a-2ade61ee12d5', saveFile: true, servername: 'http://10.251.205.11:3333')
         script {
             env.WORKSPACE = pwd()
             def output = readFile "${env.WORKSPACE}/saltOutput.json"
