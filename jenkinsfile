@@ -1,15 +1,9 @@
-import groovy.json.JsonOutput
+import groovy.json.*
 
-pipeline {
-  agent any
-
-  stages {
-    stage('Windows memoria') {
-      steps {
-        saltresult = salt authtype: 'pam', clientInterface: local(blockbuild: true, function: 'modulosmem_win.memoria', jobPollTime: 6, target: 'NGITQA-CLT-005', targettype: 'glob'), credentialsId: '0cbaee23-40ff-4289-ba3a-2ade61ee12d5', saveFile: true, servername: 'http://10.251.205.11:3333'
-            def output = JsonOutput.prettyPrint(saltresult)
-            println(output)
-       }
-    }
-  }
+node() {
+  saltresult = salt authtype: 'pam', clientInterface: local(arguments: 'dir', blockbuild: true,
+function: 'cmd.run', jobPollTime: 16, target: 'NGITQA-CLT-005', targetType: 'glob'),
+credentialsId: '0cbaee23-40ff-4289-ba3a-2ade61ee12d5', servername: 'http://10.251.205.11:3333'
+  def prettyJson = JsonOutput.prettyPrint(saltresult)
+  println(prettyJson)
 }
