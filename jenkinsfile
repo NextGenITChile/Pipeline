@@ -4,7 +4,7 @@ pipeline {
   stages {
     stage('Linux') {
       steps {
-        salt(authtype: 'pam', clientInterface: local(arguments: 'ls', blockbuild: true, function: 'cmd.run', jobPollTime: 6, target: 'NGITDV-AUT-N01', targettype: 'glob'), credentialsId: '0c19b2c0-950b-4cfa-b39a-ec1103a33141', saveFile: true, servername: 'http://10.251.205.10:3333')
+        salt(authtype: 'pam', clientInterface: local(arguments: 'ls', blockbuild: true, function: 'cmd.run', jobPollTime: 6, target: 'NGITDV-AUT-N01', targettype: 'glob'), credentialsId: '3996b821-8d42-4439-8899-e3eb69df36b6', saveFile: true, servername: 'http://10.251.205.10:3333')
         script {
             env.WORKSPACE = pwd()
             def output = readFile "${env.WORKSPACE}/saltOutput.json"
