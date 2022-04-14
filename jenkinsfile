@@ -4,7 +4,7 @@ pipeline {
   stages {
     stage('Linux') {
       steps {
-        salt(authtype: 'pam', clientInterface: local(arguments: 'ls', blockbuild: true, function: 'cmd.run', jobPollTime: 6, target: 'NGITQA-AUT-N01,NGITQA-AUT-N02,asdf', targettype: 'list'), credentialsId: '0cbaee23-40ff-4289-ba3a-2ade61ee12d5', saveFile: true, servername: 'http://10.251.205.11:3333')
+        salt(authtype: 'pam', clientInterface: local(arguments: 'ls', blockbuild: true, function: 'cmd.run', jobPollTime: 6, target: 'NGITQA-AUT-N01,NGITQA-AUT-N02,NetGenBAckup', targettype: 'list'), credentialsId: '0cbaee23-40ff-4289-ba3a-2ade61ee12d5', saveFile: true, servername: 'http://10.251.205.11:3333')
         script {
             env.WORKSPACE = pwd()
             def output = readFile "${env.WORKSPACE}/saltOutput.json"
