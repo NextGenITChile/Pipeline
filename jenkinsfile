@@ -1,9 +1,44 @@
-import groovy.json.*
-
-node() {
-  saltresult = salt authtype: 'pam', clientInterface: local(arguments: 'dir', blockbuild: true,
-function: 'cmd.run', jobPollTime: 16, target: 'NGITQA-CLT-005', targetType: 'glob'),
-credentialsId: '0cbaee23-40ff-4289-ba3a-2ade61ee12d5', servername: 'http://10.251.205.11:3333'
-  def prettyJson = JsonOutput.prettyPrint(saltresult)
-  println(prettyJson)
+pipeline {
+    agent any
+    environment {
+        state = 0
+    }
+    
+    stages {
+        stage('Windows memoria') {
+            steps {
+                script {
+                    try {
+                        salt(authtype: 'pam', clientInterface: local(arguments: 'dir', blockbuild: true, function: 'cmd.run', jobPollTime: 6, target: 'NGITQA-CLT-004', targettype: 'glob'), credentialsId: '0cbaee23-40ff-4289-ba3a-2ade61ee12d5', saveFile: true, servername: 'http://10.251.205.11:3333')
+                        script {
+                            env.WORKSPACE = pwd()
+                            def output = readFile "${env.WORKSPACE}/saltOutput.json"
+                            output_trans = output.replace("/n", "")
+                        }
+                    } catch (Exception e) {
+                        state = 1
+                    }
+                }
+            }
+        }
+        stage('Mostrar estado') {
+            steps {
+                echo "El estado es:  $state"
+            }
+        }
+        stage('Estado de Proceso') {
+            steps {
+                script {
+                    if (state == 1) {
+                        println('Error, algo ha ocurrido')
+                        throw e
+                    } else {
+                        println('Todo ha terminado OK')
+                        echo "$output_trans"
+                        return
+                    }
+                }
+            }
+        }
+    }
 }
